@@ -20,32 +20,11 @@ function Book(title, author, pageCount, status) {
   };
 }
 
-// manually add a few books to get display working..
-const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "read");
-console.log(theHobbit.info());
-
-const thePaperMenagerie = new Book(
-  "The Paper Menagerie",
-  "Ken Liu",
-  "464",
-  "read"
-);
-
-const aPromisedLand = new Book(
-  "A Promised Land",
-  "Barack Obama",
-  "768",
-  "not read"
-);
-
-// add to library array
-myLibrary.push(theHobbit, thePaperMenagerie, aPromisedLand);
-console.log({ myLibrary });
-
 // loop through myLibrary array and display each book on the page
 const bookTileContainer = document.querySelector("#bookTileContainer");
 
 function displayBookInfoOnBookTile() {
+  bookTileContainer.innerHTML = "";
   myLibrary.forEach((book) => {
     const bookTile = document.createElement("div");
     bookTile.textContent = book.info();
@@ -53,9 +32,6 @@ function displayBookInfoOnBookTile() {
     bookTileContainer.appendChild(bookTile);
   });
 }
-
-// what calls displayBookInfoOnBookTile... refresh? or submit?
-displayBookInfoOnBookTile();
 
 // add "New Book" button to generate form for users to input details:
 // author, title, pageCount, readStatus
@@ -82,23 +58,17 @@ function getInputValues() {
   let enteredPageCount = document.querySelector("#count").value;
   let enteredReadStatus = document.querySelector("#status").value;
 
-  //   return enteredTitle, enteredAuthor, enteredPageCount, enteredReadStatus;
-  console.log(enteredTitle, enteredAuthor, enteredPageCount, enteredReadStatus);
+  const newBook = new Book(
+    enteredTitle,
+    enteredAuthor,
+    enteredPageCount,
+    enteredReadStatus
+  );
+
+  myLibrary.push(newBook);
+  displayBookInfoOnBookTile();
+  console.log(myLibrary);
 }
-
-// const newBookTile = new Book(
-//   enteredTitle,
-//   enteredAuthor,
-//   enteredPageCount,
-//   enteredReadStatus
-// );
-
-// console.log(newBookTile);
-// Book() creates a new Book object
-// function addToLibrary appends new Book object to myLibrary array
-// function addToLibrary() {
-//     adds book objects to myLibrary array
-// }
 
 // add "Remove" button to remove book from library
 // need to associate DOM elements with the actual books..
