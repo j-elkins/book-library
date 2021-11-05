@@ -12,11 +12,13 @@
     <script type="text/javascript" src="index.js" defer></script>
   </head>
   <body>
-    <h1>Library</h1>
+    <h1>My Library</h1>
     <div id="bookTileContainer"></div>
-    <button id="newBookButton">Click here to add new book</button>
+    <button id="newBookButton" class="button">
+      Click here to add new book
+    </button>
     <div id="newBookFormDiv" class="hidden">
-      <form action="submit.php" method="post">
+      <form action="submit.php" method="post" id="newBookForm">
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" /><br />
 
@@ -29,7 +31,7 @@
         <label for="status">Read Status:</label>
         <input type="text" id="status" name="status" /><br />
 
-        <input type="submit" />
+        <input type="submit" id="submitNewBookButton" />
       </form>
     </div>
   </body>

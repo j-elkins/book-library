@@ -1,5 +1,5 @@
 // books are stored in a simple array
-let myLibrary = [];
+const myLibrary = [];
 
 // object constructor to create new book objects
 function Book(title, author, pageCount, status) {
@@ -22,8 +22,7 @@ function Book(title, author, pageCount, status) {
 
 // manually add a few books to get display working..
 const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "read");
-
-// console.log(theHobbit.info());
+console.log(theHobbit.info());
 
 const thePaperMenagerie = new Book(
   "The Paper Menagerie",
@@ -43,56 +42,13 @@ const aPromisedLand = new Book(
 myLibrary.push(theHobbit, thePaperMenagerie, aPromisedLand);
 console.log({ myLibrary });
 
-// add "New Book" button brings up form for users to input details:
-// author, title, pageCount, readStatus
-const newBookFormDiv = document.querySelector("#newBookFormDiv");
-const newBookButton = document.querySelector("#newBookButton");
-newBookButton.addEventListener("click", () => {
-  newBookFormDiv.classList.remove("hidden");
-});
-
-// create a form dynamically - make newBookFormDiv visible
-// function generateNewForm() {}
-
-// take users' input and store new book objects into array
-function addToLibrary() {}
-
 // loop through array and display each book on the page (table or tiles)
 const bookTileContainer = document.querySelector("#bookTileContainer");
-let bookTile = document.createElement("div");
-// let title = "";
-// let author = "";
-// let pageCount = "";
-// let readStatus = "";
-
-// function loopThroughAllBooksGetInfo() {
-//   myLibrary.forEach((book) => {
-//     info = book.info;
-//     title = book.title;
-//     author = book.author;
-//     pageCount = book.pageCount;
-//     readStatus = book.status;
-//     return info, title, author, pageCount, readStatus;
-//   });
-// }
-
-// function displayBookInfoOnPage() {
-//   bookTile.textContent =
-//     title + " by " + author + ", " + pageCount + " pages, " + readStatus;
-//   bookTile.classList.add("tile");
-//   bookTileContainer.appendChild(bookTile);
-// }
 
 function displayBookInfoOnBookTile() {
   myLibrary.forEach((book) => {
-    bookTile.textContent =
-      book.title +
-      " by " +
-      book.author +
-      ", " +
-      book.pageCount +
-      " pages, " +
-      book.status;
+    const bookTile = document.createElement("div");
+    bookTile.textContent = book.info();
     bookTile.classList.add("tile");
     bookTileContainer.appendChild(bookTile);
   });
@@ -100,10 +56,39 @@ function displayBookInfoOnBookTile() {
 
 displayBookInfoOnBookTile();
 
-// for (let i = 0, l = myLibrary.length; i < l; i++) {
-//     bookTile.textContent = book.title + book.author + book.pageNumber + book.status;
-//     bookTileContainer.appendChild(bookTile);
-//   }
+// add "New Book" button to generate form for users to input details:
+// author, title, pageCount, readStatus
+const newBookFormDiv = document.querySelector("#newBookFormDiv");
+const newBookButton = document.querySelector("#newBookButton");
+newBookButton.addEventListener("click", () => {
+  newBookFormDiv.classList.toggle("hidden");
+});
+
+// take users' input and store new book objects into array:
+// click submit on newBookForm enters user input into Book()
+const submitNewBookButton = document.querySelector("#submitNewBookButton");
+submitNewBookButton.addEventListener("click", () => {
+  // grabs innerText.HTML from each field and saves it into variables
+});
+
+let enteredTitle = document.querySelector("#title");
+let enteredAuthor = document.querySelector("#author");
+let enteredPageCount = document.querySelector("#count");
+let enteredReadStatus = document.querySelector("#status");
+
+const newBookTile = new Book(
+  enteredTitle,
+  enteredAuthor,
+  enteredPageCount,
+  enteredReadStatus
+);
+
+console.log(newBookTile);
+// Book() creates a new Book object
+// function addToLibrary appends new Book object to myLibrary array
+// function addToLibrary() {
+//     adds book objects to myLibrary array
+// }
 
 // add "Remove" button to remove book from library
 // need to associate DOM elements with the actual books..
