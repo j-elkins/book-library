@@ -15,6 +15,22 @@
     <h1>Library</h1>
     <div id="bookTileContainer"></div>
     <button id="newBookButton">Click here to add new book</button>
-    <div id="newBookFormDiv"></div>
+    <div id="newBookFormDiv" class="hidden">
+      <form action="submit.php" method="post">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" /><br />
+
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" /><br />
+
+        <label for="count">Page Count:</label>
+        <input type="text" id="count" name="count" /><br />
+
+        <label for="status">Read Status:</label>
+        <input type="text" id="status" name="status" /><br />
+
+        <input type="submit" />
+      </form>
+    </div>
   </body>
 </html>

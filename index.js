@@ -48,44 +48,11 @@ console.log({ myLibrary });
 const newBookFormDiv = document.querySelector("#newBookFormDiv");
 const newBookButton = document.querySelector("#newBookButton");
 newBookButton.addEventListener("click", () => {
-  generateNewForm();
+  newBookFormDiv.classList.remove("hidden");
 });
-// Create a break line element
-var br = document.createElement("br");
 
-//create a form dynamically
-function generateNewForm() {
-  let form = document.createElement("form");
-  form.setAttribute("method", "post");
-  form.setAttribute("action", "submit.php");
-
-  //create input elements for book title, author, pageCount, readStatus
-  let inputTitle = document.createElement("input");
-  inputTitle.setAttribute("type", "text");
-  inputTitle.setAttribute("name", "Title");
-  inputTitle.setAttribute("placeholder", "Enter Title");
-
-  let inputAuthor = document.createElement("input");
-  inputTitle.setAttribute("type", "text");
-  inputTitle.setAttribute("name", "Author");
-  inputTitle.setAttribute("placeholder", "Enter Author");
-
-  let inputPageCount = document.createElement("input");
-  inputTitle.setAttribute("type", "text");
-  inputTitle.setAttribute("name", "PageCount");
-  inputTitle.setAttribute("placeholder", "Enter Page Count");
-
-  let inputReadStatus = document.createElement("input");
-  inputTitle.setAttribute("type", "text");
-  inputTitle.setAttribute("name", "ReadStatus");
-  inputTitle.setAttribute("placeholder", "Have you read it before?");
-
-  form.appendChild(inputTitle);
-  form.appendChild(inputAuthor);
-  form.appendChild(inputPageCount);
-  form.appendChild(inputReadStatus);
-  newBookFormDiv.appendChild(form);
-}
+// create a form dynamically - make newBookFormDiv visible
+// function generateNewForm() {}
 
 // take users' input and store new book objects into array
 function addToLibrary() {}
