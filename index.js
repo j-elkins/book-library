@@ -2,10 +2,10 @@
 let myLibrary = [];
 
 // object constructor to create new book objects
-function Book(title, author, pageNumber, status) {
+function Book(title, author, pageCount, status) {
   this.title = title;
   this.author = author;
-  this.pageNumber = pageNumber;
+  this.pageCount = pageCount;
   this.status = status;
   this.info = function () {
     return (
@@ -13,20 +13,88 @@ function Book(title, author, pageNumber, status) {
       " by " +
       this.author +
       ", " +
-      this.pageNumber +
+      this.pageCount +
       " pages, " +
       this.status
     );
   };
 }
 
-// take users' input and store new book objects into array
-function addToLibrary() {}
+// manually add a few books to get display working..
+const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "read");
 
-// loop through array and display each book on the page (table or indiv cards)
+// console.log(theHobbit.info());
+
+const thePaperMenagerie = new Book(
+  "The Paper Menagerie",
+  "Ken Liu",
+  "464",
+  "read"
+);
+
+const aPromisedLand = new Book(
+  "A Promised Land",
+  "Barack Obama",
+  "768",
+  "not read"
+);
+
+// add to library array
+myLibrary.push(theHobbit, thePaperMenagerie, aPromisedLand);
+console.log({ myLibrary });
 
 // add "New Book" button brings up form for users to input details:
 // author, title, pageCount, readStatus
+// take users' input and store new book objects into array
+function addToLibrary() {}
+
+// loop through array and display each book on the page (table or tiles)
+const bookTileContainer = document.querySelector("#bookTileContainer");
+let bookTile = document.createElement("div");
+// let title = "";
+// let author = "";
+// let pageCount = "";
+// let readStatus = "";
+
+// function loopThroughAllBooksGetInfo() {
+//   myLibrary.forEach((book) => {
+//     info = book.info;
+//     title = book.title;
+//     author = book.author;
+//     pageCount = book.pageCount;
+//     readStatus = book.status;
+//     return info, title, author, pageCount, readStatus;
+//   });
+// }
+
+// function displayBookInfoOnPage() {
+//   bookTile.textContent =
+//     title + " by " + author + ", " + pageCount + " pages, " + readStatus;
+//   bookTile.classList.add("tile");
+//   bookTileContainer.appendChild(bookTile);
+// }
+
+function displayBookInfoOnBookTile() {
+  myLibrary.forEach((book) => {
+    bookTile.textContent =
+      book.title +
+      " by " +
+      book.author +
+      ", " +
+      book.pageCount +
+      " pages, " +
+      book.status;
+    bookTile.classList.add("tile");
+    bookTileContainer.appendChild(bookTile);
+  });
+}
+
+displayBookInfoOnBookTile();
+
+// for (let i = 0, l = myLibrary.length; i < l; i++) {
+//     bookTile.textContent = book.title + book.author + book.pageNumber + book.status;
+//     bookTileContainer.appendChild(bookTile);
+//   }
 
 // add "Remove" button to remove book from library
 // need to associate DOM elements with the actual books..
