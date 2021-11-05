@@ -1,5 +1,5 @@
 // books are stored in a simple array
-let myLibrary = [];
+const myLibrary = [];
 
 // object constructor to create new book objects
 function Book(title, author, pageCount, status) {
@@ -22,8 +22,7 @@ function Book(title, author, pageCount, status) {
 
 // manually add a few books to get display working..
 const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "read");
-
-// console.log(theHobbit.info());
+console.log(theHobbit.info());
 
 const thePaperMenagerie = new Book(
   "The Paper Menagerie",
@@ -43,100 +42,63 @@ const aPromisedLand = new Book(
 myLibrary.push(theHobbit, thePaperMenagerie, aPromisedLand);
 console.log({ myLibrary });
 
-// add "New Book" button brings up form for users to input details:
-// author, title, pageCount, readStatus
-const newBookFormDiv = document.querySelector("#newBookFormDiv");
-const newBookButton = document.querySelector("#newBookButton");
-newBookButton.addEventListener("click", () => {
-  generateNewForm();
-});
-// Create a break line element
-var br = document.createElement("br");
-
-//create a form dynamically
-function generateNewForm() {
-  let form = document.createElement("form");
-  form.setAttribute("method", "post");
-  form.setAttribute("action", "submit.php");
-
-  //create input elements for book title, author, pageCount, readStatus
-  let inputTitle = document.createElement("input");
-  inputTitle.setAttribute("type", "text");
-  inputTitle.setAttribute("name", "Title");
-  inputTitle.setAttribute("placeholder", "Enter Title");
-
-  let inputAuthor = document.createElement("input");
-  inputTitle.setAttribute("type", "text");
-  inputTitle.setAttribute("name", "Author");
-  inputTitle.setAttribute("placeholder", "Enter Author");
-
-  let inputPageCount = document.createElement("input");
-  inputTitle.setAttribute("type", "text");
-  inputTitle.setAttribute("name", "PageCount");
-  inputTitle.setAttribute("placeholder", "Enter Page Count");
-
-  let inputReadStatus = document.createElement("input");
-  inputTitle.setAttribute("type", "text");
-  inputTitle.setAttribute("name", "ReadStatus");
-  inputTitle.setAttribute("placeholder", "Have you read it before?");
-
-  form.appendChild(inputTitle);
-  form.appendChild(inputAuthor);
-  form.appendChild(inputPageCount);
-  form.appendChild(inputReadStatus);
-  newBookFormDiv.appendChild(form);
-}
-
-// take users' input and store new book objects into array
-function addToLibrary() {}
-
-// loop through array and display each book on the page (table or tiles)
+// loop through myLibrary array and display each book on the page
 const bookTileContainer = document.querySelector("#bookTileContainer");
-let bookTile = document.createElement("div");
-// let title = "";
-// let author = "";
-// let pageCount = "";
-// let readStatus = "";
-
-// function loopThroughAllBooksGetInfo() {
-//   myLibrary.forEach((book) => {
-//     info = book.info;
-//     title = book.title;
-//     author = book.author;
-//     pageCount = book.pageCount;
-//     readStatus = book.status;
-//     return info, title, author, pageCount, readStatus;
-//   });
-// }
-
-// function displayBookInfoOnPage() {
-//   bookTile.textContent =
-//     title + " by " + author + ", " + pageCount + " pages, " + readStatus;
-//   bookTile.classList.add("tile");
-//   bookTileContainer.appendChild(bookTile);
-// }
 
 function displayBookInfoOnBookTile() {
   myLibrary.forEach((book) => {
-    bookTile.textContent =
-      book.title +
-      " by " +
-      book.author +
-      ", " +
-      book.pageCount +
-      " pages, " +
-      book.status;
+    const bookTile = document.createElement("div");
+    bookTile.textContent = book.info();
     bookTile.classList.add("tile");
     bookTileContainer.appendChild(bookTile);
   });
 }
 
+// what calls displayBookInfoOnBookTile... refresh? or submit?
 displayBookInfoOnBookTile();
 
-// for (let i = 0, l = myLibrary.length; i < l; i++) {
-//     bookTile.textContent = book.title + book.author + book.pageNumber + book.status;
-//     bookTileContainer.appendChild(bookTile);
-//   }
+// add "New Book" button to generate form for users to input details:
+// author, title, pageCount, readStatus
+const newBookFormDiv = document.querySelector("#newBookFormDiv");
+const newBookButton = document.querySelector("#newBookButton");
+newBookButton.addEventListener("click", () => {
+  newBookFormDiv.classList.toggle("hidden");
+});
+
+// take users' input from form and store new book objects into array:
+// click submit on newBookForm enters user input into Book()
+const submitNewBookButton = document.querySelector("#submitNewBookButton");
+let inputs = document.querySelectorAll("input");
+
+submitNewBookButton.addEventListener("click", () => {
+  getInputValues();
+  inputs.forEach((input) => (input.value = ""));
+});
+
+// function grabs innerText.HTML from each input and saves it into variables
+function getInputValues() {
+  let enteredTitle = document.querySelector("#title").value;
+  let enteredAuthor = document.querySelector("#author").value;
+  let enteredPageCount = document.querySelector("#count").value;
+  let enteredReadStatus = document.querySelector("#status").value;
+
+  //   return enteredTitle, enteredAuthor, enteredPageCount, enteredReadStatus;
+  console.log(enteredTitle, enteredAuthor, enteredPageCount, enteredReadStatus);
+}
+
+// const newBookTile = new Book(
+//   enteredTitle,
+//   enteredAuthor,
+//   enteredPageCount,
+//   enteredReadStatus
+// );
+
+// console.log(newBookTile);
+// Book() creates a new Book object
+// function addToLibrary appends new Book object to myLibrary array
+// function addToLibrary() {
+//     adds book objects to myLibrary array
+// }
 
 // add "Remove" button to remove book from library
 // need to associate DOM elements with the actual books..
