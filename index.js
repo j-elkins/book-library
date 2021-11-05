@@ -42,7 +42,7 @@ const aPromisedLand = new Book(
 myLibrary.push(theHobbit, thePaperMenagerie, aPromisedLand);
 console.log({ myLibrary });
 
-// loop through array and display each book on the page (table or tiles)
+// loop through myLibrary array and display each book on the page
 const bookTileContainer = document.querySelector("#bookTileContainer");
 
 function displayBookInfoOnBookTile() {
@@ -54,6 +54,7 @@ function displayBookInfoOnBookTile() {
   });
 }
 
+// what calls displayBookInfoOnBookTile... refresh? or submit?
 displayBookInfoOnBookTile();
 
 // add "New Book" button to generate form for users to input details:
@@ -64,26 +65,35 @@ newBookButton.addEventListener("click", () => {
   newBookFormDiv.classList.toggle("hidden");
 });
 
-// take users' input and store new book objects into array:
+// take users' input from form and store new book objects into array:
 // click submit on newBookForm enters user input into Book()
 const submitNewBookButton = document.querySelector("#submitNewBookButton");
+let inputs = document.querySelectorAll("input");
+
 submitNewBookButton.addEventListener("click", () => {
-  // grabs innerText.HTML from each field and saves it into variables
+  getInputValues();
+  inputs.forEach((input) => (input.value = ""));
 });
 
-let enteredTitle = document.querySelector("#title");
-let enteredAuthor = document.querySelector("#author");
-let enteredPageCount = document.querySelector("#count");
-let enteredReadStatus = document.querySelector("#status");
+// function grabs innerText.HTML from each input and saves it into variables
+function getInputValues() {
+  let enteredTitle = document.querySelector("#title").value;
+  let enteredAuthor = document.querySelector("#author").value;
+  let enteredPageCount = document.querySelector("#count").value;
+  let enteredReadStatus = document.querySelector("#status").value;
 
-const newBookTile = new Book(
-  enteredTitle,
-  enteredAuthor,
-  enteredPageCount,
-  enteredReadStatus
-);
+  //   return enteredTitle, enteredAuthor, enteredPageCount, enteredReadStatus;
+  console.log(enteredTitle, enteredAuthor, enteredPageCount, enteredReadStatus);
+}
 
-console.log(newBookTile);
+// const newBookTile = new Book(
+//   enteredTitle,
+//   enteredAuthor,
+//   enteredPageCount,
+//   enteredReadStatus
+// );
+
+// console.log(newBookTile);
 // Book() creates a new Book object
 // function addToLibrary appends new Book object to myLibrary array
 // function addToLibrary() {
