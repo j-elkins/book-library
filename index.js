@@ -20,25 +20,57 @@ function Book(title, author, pageCount, status) {
   };
 }
 
+// manually add a few books to get display working..
+const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "read");
+console.log(theHobbit.info());
+
+const thePaperMenagerie = new Book(
+  "The Paper Menagerie",
+  "Ken Liu",
+  "464",
+  "read"
+);
+
+const aPromisedLand = new Book(
+  "A Promised Land",
+  "Barack Obama",
+  "768",
+  "not read"
+);
+
+// add to library array
+myLibrary.push(theHobbit, thePaperMenagerie, aPromisedLand);
+console.log({ myLibrary });
+
 // loop through myLibrary array and display each book on the page
 const bookTileContainer = document.querySelector("#bookTileContainer");
 
-function displayBookInfoOnBookTile() {
+function createBookTileWIthInfo() {
   bookTileContainer.innerHTML = "";
   myLibrary.forEach((book) => {
     const bookTile = document.createElement("div");
     bookTile.textContent = book.info();
     bookTile.classList.add("tile");
     bookTileContainer.appendChild(bookTile);
+
+    const removeBookButton = document.createElement("button");
+    removeBookButton.addEventListener("click", () => {
+      removeBookFromLibrary();
+    });
+    removeBookButton.textContent = "X";
+    removeBookButton.classList.add("button");
+    bookTile.appendChild(removeBookButton);
   });
 }
 
+createBookTileWIthInfo();
+
 // add "New Book" button to generate form for users to input details:
 // author, title, pageCount, readStatus
-const newBookFormDiv = document.querySelector("#newBookFormDiv");
-const newBookButton = document.querySelector("#newBookButton");
-newBookButton.addEventListener("click", () => {
-  newBookFormDiv.classList.toggle("hidden");
+const addNewBookForm = document.querySelector("#addNewBookForm");
+const addNewBookButton = document.querySelector("#addNewBookButton");
+addNewBookButton.addEventListener("click", () => {
+  addNewBookForm.classList.toggle("hidden");
 });
 
 // take users' input from form and store new book objects into array:
@@ -66,13 +98,18 @@ function getInputValues() {
   );
 
   myLibrary.push(newBook);
-  displayBookInfoOnBookTile();
+  createBookTileWIthInfo();
   console.log(myLibrary);
 }
 
 // add "Remove" button to remove book from library
 // need to associate DOM elements with the actual books..
 // can use data-attribute corresponding to index of lib array
+function removeBookFromLibrary() {
+  myLibrary.filter((book) => book.title === book.title);
+}
+
+console.log(removeBookFromLibrary());
 
 // add button on book display to change "read" status
 // function to toggle "read" status on Book prototype instance
