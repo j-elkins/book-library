@@ -20,9 +20,10 @@ h1 {
 
 .tile {
   display: flex;
+  /* grid-template-columns: 100px 100px; */
   flex-direction: column;
   text-align: center;
-  gap: 30px;
+  /* gap: 30px; */
   border: 1px #333 solid;
   margin: 10px;
   padding: 5px;
@@ -35,20 +36,36 @@ h1 {
 
 .button {
   font-family: "Architects Daughter", cursive;
-  background-color: #333;
-  color: white;
+  /* background-color: #333; */
+  color: #333;
   border: 1px solid #333;
   border-radius: 8px;
   padding: 10px 20px;
   margin: 10px;
 }
 
+.removeBtn {
+  background-color: coral;
+  /* width: 20px; */
+  border-radius: 50px;
+  padding: 0 px 10px 0 10px;
+}
+
+.statusBtn {
+  background-color: rgb(168, 182, 220);
+  /* width: 20px; */
+  border-radius: 50px;
+  text-align: center;
+  padding: 0 px 10px 0 10px;
+}
+
 .button:hover {
-  background-color: #2498a0;
+  background-color: #333;
+  color: peachpuff;
 }
 
 .button:active {
-  background-color: #2498a0;
+  background-color: #333;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
