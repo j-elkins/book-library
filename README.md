@@ -6,3 +6,7 @@ Things Learned:
 
 - Object creation
 - Adding objects to an array from user input
+
+Background Image:
+https://www.pexels.com/photo/books-on-shelves-1662277/
+Photo by Luis Zheji from Pexels
