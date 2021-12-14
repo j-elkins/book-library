@@ -2,16 +2,51 @@
 let myLibrary = [];
 
 // object constructor to create new book objects
-function Book(title, author, pageCount, status) {
-  this.title = title;
-  this.author = author;
-  this.pageCount = pageCount;
-  this.status = status;
+// function Book(title, author, pageCount, status) {
+//   this.title = title;
+//   this.author = author;
+//   this.pageCount = pageCount;
+//   this.status = status;
+// }
+
+// rewrite using Classes
+class Book {
+  set title(t) {
+    this._title = t;
+  }
+  set author(a) {
+    this._author = a;
+  }
+  set pageCount(p) {
+    this._pageCount = p;
+  }
+  set status(s) {
+    this._status = s;
+  }
+
+  get title() {
+    return this._title;
+  }
+  get author() {
+    return this._author;
+  }
+  get pageCount() {
+    return this._pageCount;
+  }
+  get status() {
+    return this._status;
+  }
+
+  constructor(title, author, pageCount, status) {
+    this._title = title;
+    this._author = author;
+    this._pageCount = pageCount;
+    this._status = status;
+  }
 }
 
 // manually add a few books to get the display working..
 const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "read");
-// console.log(theHobbit.info());
 
 const thePaperMenagerie = new Book(
   "The Paper Menagerie",
@@ -86,7 +121,7 @@ function createBookTileWithInfo() {
 
     bookTileContainer.appendChild(bookTile);
 
-    saveLibraryArrayToLocalStorage();
+    saveLibraryToLocalStorage();
   });
 }
 
@@ -142,13 +177,13 @@ function removeBookFromLibrary(bookToRemove) {
 // could also use Storage.length to test whether the storage object is empty or not
 
 // function to save whole lib array to localStorage each time new book created
-function saveLibraryArrayToLocalStorage() {
+function saveLibraryToLocalStorage() {
   localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
 }
 
 // function to look for that array when app is first loaded /
 // function to pull books from local storage when page refreshed
-function checkIfLibraryArrayExistsInLocalStorage() {
+function checkIfLibraryExistsInLocalStorage() {
   if (!localStorage.myLibrary) {
     createBookTileWithInfo();
   } else {
@@ -159,5 +194,7 @@ function checkIfLibraryArrayExistsInLocalStorage() {
   }
 }
 // make sure app doesn't crash if lib array isn't in localStorage..
-// JSON can't store functions.. how to add methods back to obj properties after retrieval?
-// JSON.stringify(value[, replacer[, space]]) // ??
+
+// window.onload = function () {
+//   checkIfLibraryExistsInLocalStorage();
+// };

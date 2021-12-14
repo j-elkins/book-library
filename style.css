@@ -170,17 +170,24 @@ input {
 
 /* FOOTER --------------------------------------------- */
 footer {
-  font-size: 10px;
-  background-color: rgb(24, 7, 7);
+  font-size: 14px;
+  background-color: rgba(24, 7, 7, 0.639);
   width: 100%;
   color: peachpuff;
   text-align: center;
-  position: bottom;
+  position: absolute;
   bottom: 0;
-  height: 40px;
-  margin-top: 2em;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
+}
+
+footer i {
+  transition: 1s ease;
+}
+
+footer i:hover {
+  transform: rotate(360deg);
 }
