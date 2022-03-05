@@ -1,86 +1,105 @@
-let myLibrary = [];
+let bookLibrary = [];
 const bookTileContainer = document.querySelector("#bookTileContainer");
-
+const addNewBookForm = document.querySelector("#addNewBookForm");
 class Book {
   constructor(title, author, pageCount, status) {
     this.title = title;
     this.author = author;
-    this.pageCount = pageCount;
+    this.pages = pageCount;
     this.status = status;
   }
 }
+document.addEventListener("DOMContentLoaded", () => {
+  fetch(`http://localhost:3000/books`)
+    .then((response) => response.json())
+    .then((data) => {
+      // loading page updates bookLibrary with current data
+      data.forEach((bookObj) => {
+        bookLibrary.push(bookObj);
+      });
 
-// loop through myLibrary array and display each book on the page
-function createBookTileWithInfo() {
+      updateLibrary(bookLibrary);
+      console.log(bookLibrary);
+    });
+});
+
+function updateLibrary(arr) {
+  // resets DOM & iterates through library, creating a book tile for each book
   bookTileContainer.innerHTML = "";
-  myLibrary.forEach((currentBook) => {
-    // create a new book tile populated with book info
-    const bookTile = document.createElement("div");
-    bookTile.classList.add("tile");
 
-    const bookTileTitle = document.createElement("div");
-    const bookTileAuthor = document.createElement("div");
-    const bookTilePageCount = document.createElement("div");
-
-    bookTileTitle.textContent = currentBook.title;
-    bookTileAuthor.textContent = currentBook.author;
-    bookTilePageCount.textContent = currentBook.pageCount + " pages";
-    bookTileTitle.classList.add("title");
-    bookTileAuthor.classList.add("author");
-    bookTilePageCount.classList.add("pageCount");
-    bookTile.append(bookTileTitle, bookTileAuthor, bookTilePageCount);
-
-    const buttonsDiv = document.createElement("div");
-    buttonsDiv.classList.add("buttonsDiv");
-    bookTile.appendChild(buttonsDiv);
-
-    // add button to tile: removes book from library
-    const removeBookButton = document.createElement("button");
-    removeBookButton.addEventListener("click", () => {
-      removeBookFromLibrary(currentBook);
-    });
-    removeBookButton.innerHTML = '<i class="fas fa-times"></i>';
-    removeBookButton.classList.add("button");
-    removeBookButton.classList.add("removeBtn");
-    buttonsDiv.appendChild(removeBookButton);
-
-    // add button to tile: shows read/not read status
-    const toggleReadStatusButton = document.createElement("button");
-    toggleReadStatusButton.classList.add("button");
-    toggleReadStatusButton.classList.add("statusBtn");
-    toggleReadStatusButton.textContent = currentBook.status;
-    toggleReadStatusButton.addEventListener("click", (event) => {
-      if (currentBook.status == "read") {
-        currentBook.status = "not read";
-      } else {
-        currentBook.status = "read";
-      }
-
-      toggleReadStatusButton.textContent = currentBook.status;
-    });
-    buttonsDiv.appendChild(toggleReadStatusButton);
-
-    bookTileContainer.appendChild(bookTile);
-
-    saveLibraryToLocalStorage();
+  arr.forEach((bookObj) => {
+    console.log(bookObj);
+    createBookTile(bookObj);
   });
 }
 
+function createBookTile(bookObj) {
+  // creates a book tile populated from bookObj info & appends to DOM
+  const bookTile = document.createElement("div");
+  bookTile.classList.add("tile");
+
+  const bookTileTitle = document.createElement("div");
+  const bookTileAuthor = document.createElement("div");
+  const bookTilePageCount = document.createElement("div");
+
+  bookTileTitle.textContent = bookObj.title;
+  bookTileAuthor.textContent = bookObj.author;
+  bookTilePageCount.textContent = bookObj.pages + " pages";
+  bookTileTitle.classList.add("title");
+  bookTileAuthor.classList.add("author");
+  bookTilePageCount.classList.add("pageCount");
+
+  const buttonsDiv = document.createElement("div");
+  buttonsDiv.classList.add("buttonsDiv");
+
+  // add button to tile: removes book from library
+  const removeBookBtn = document.createElement("button");
+  removeBookBtn.addEventListener("click", () => {
+    removeBookFromLibrary(bookObj);
+  });
+  removeBookBtn.innerHTML = '<i class="fas fa-times"></i>';
+  removeBookBtn.classList.add("button");
+  removeBookBtn.classList.add("removeBtn");
+
+  // add button to tile: shows read/not read status
+  const toggleStatusBtn = document.createElement("button");
+  toggleStatusBtn.classList.add("button");
+  toggleStatusBtn.classList.add("statusBtn");
+  toggleStatusBtn.textContent = bookObj.status;
+  toggleStatusBtn.addEventListener("click", (event) => {
+    if (bookObj.status == "read") {
+      bookObj.status = "not read";
+    } else {
+      bookObj.status = "read";
+    }
+
+    toggleStatusBtn.textContent = bookObj.status;
+    saveUpdatedBookInfo(bookObj);
+  });
+
+  buttonsDiv.append(removeBookBtn, toggleStatusBtn);
+  bookTile.append(bookTileTitle, bookTileAuthor, bookTilePageCount, buttonsDiv);
+  bookTileContainer.appendChild(bookTile);
+}
+
 // get input from form and store new book objects into array
-const addNewBookForm = document.querySelector("#addNewBookForm");
 addNewBookForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const newBook = new Book(
+  const newBookObj = new Book(
     e.target["title"].value,
     e.target["author"].value,
-    e.target["count"].value,
+    e.target["pages"].value,
     e.target["status"].value
   );
 
-  myLibrary.push(newBook);
-  createBookTileWithInfo();
-  console.log(myLibrary);
+  console.log(newBookObj);
+  bookLibrary.push(newBookObj);
+  saveBook(newBookObj);
+  updateLibrary(bookLibrary);
+
+  // createBookTileWithInfo();
+  console.log(bookLibrary);
 });
 
 const addNewBookButton = document.querySelector("#addNewBookButton");
@@ -89,68 +108,71 @@ addNewBookButton.addEventListener("click", () => {
 });
 
 // function returns new array with all books except the one selected (removed)
-function removeBookFromLibrary(bookToRemove) {
-  myLibrary = myLibrary.filter(
-    (allowedBook) => allowedBook.title !== bookToRemove.title
+function removeBookFromLibrary(bookObj) {
+  //rewrite this to be based on book ID
+  bookLibrary = bookLibrary.filter(
+    (allowedBook) => allowedBook.title !== bookObj.title
   );
-  createBookTileWithInfo();
+
+  deleteBook(bookObj);
+  updateLibrary(bookLibrary);
 }
 
-// BONUS: add persistence using Web Storage API / localStorage
-// first, test whether the storage object has already been populated (i.e., the page was previously accessed)
-// could also use Storage.length to test whether the storage object is empty or not
-
-// function to save whole lib array to localStorage each time new book created
-function saveLibraryToLocalStorage() {
-  localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
-}
-
-// function to look for that array when app is first loaded /
-// function to pull books from local storage when page refreshed
-function checkIfLibraryExistsInLocalStorage() {
-  const storedLibrary = localStorage.getItem("myLibrary"); // gets information from local storage to use in below loop to create DOM/display
-  if (storedLibrary) {
-    const parsedLibrary = JSON.parse(storedLibrary);
-    myLibrary = parsedLibrary.map(function (almostBook) {
-      // return new Book(
-      //   almostBook.title,
-      //   almostBook.author,
-      //   almostBook.pageCount,
-      //   almostBook.status
-      // );
-
-      Object.setPrototypeOf(almostBook, Book.prototype);
-      return almostBook;
+function saveBook(bookObj) {
+  fetch(`http://localhost:3000/books`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(bookObj),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
     });
-    console.log("Library restored");
-  } else {
-    // manually add a few books to get the display working..
-    const theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", "295", "read");
-
-    const thePaperMenagerie = new Book(
-      "The Paper Menagerie",
-      "Ken Liu",
-      "464",
-      "read"
-    );
-
-    const aPromisedLand = new Book(
-      "A Promised Land",
-      "Barack Obama",
-      "768",
-      "not read"
-    );
-
-    // add manual books to library array
-    myLibrary.push(theHobbit, thePaperMenagerie, aPromisedLand);
-
-    console.log("Default library created");
-  }
-  createBookTileWithInfo();
 }
 
-// make sure app doesn't crash if lib array isn't in localStorage..
+function saveUpdatedBookInfo(bookObj) {
+  fetch(`http://localhost:3000/books/${bookObj.id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ status: `${bookObj.status}` }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
-window.onload = function () {
-  checkIfLibraryExistsInLocalStorage();
-};
+function deleteBook(bookObj) {
+  fetch(`http://localhost:3000/books/${bookObj.id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+// NEXT:
+// 1. set up & connect to db.json with hardcoded books *DONE
+// 2. link form input to create new db object *DONE
+// 3. establish POST, PATCH, DELETE for persistence *DONE
+// 4. search by title and pull info from book API

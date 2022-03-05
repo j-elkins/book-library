@@ -1,0 +1,25 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "title": "The Hobbit",
+      "author": "J.R.R. Tolkien",
+      "pages": "295",
+      "status": "read"
+    },
+    {
+      "id": 1,
+      "title": "The Paper Menagerie",
+      "author": "Ken Liu",
+      "pages": "464",
+      "status": "read"
+    },
+    {
+      "id": 1,
+      "title": "A Promised Land",
+      "author": "Barack Obama",
+      "pages": "768",
+      "status": "not read"
+    }
+  ]
+}
